@@ -1,80 +1,30 @@
-# PHP as Linux Web App on Azure
-# Build, package and deploy your PHP project to Azure Linux Web App.
-# Add steps that run tests and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/php
-
 trigger:
 - master
 
-variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '4d2d49fd-ab2a-491e-811b-0cef1b57aa99'
-
-  # Web app name
-  webAppName: 'fypprojectweb3'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
-  # Environment name
-  environmentName: 'fypprojectweb3'
-
-  # Root folder under which your composer.json file is available.
-  rootFolder: $(System.DefaultWorkingDirectory)
-
 stages:
-- stage: Build
-  displayName: Build stage
-  variables:
-    phpVersion: '7.3'
+- stage: 'buildstage'
   jobs:
-  - job: BuildJob
+  - job: 'buildjob'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: |
-        sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-        sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-        sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-        sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-        sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-        php -version
-      workingDirectory: $(rootFolder)
-      displayName: 'Use PHP version $(phpVersion)'
+    - bash: |
+        chmod -R 777  ./
+        docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://$(ip -f inet -o addr show docker0 | awk '{print $4}' | cut -d '/' -f 1):<container_port> -x 
+xml_report.xml
+        true
+      displayName: 'Owasp Container Scan'
 
-    - script: composer install --no-interaction --prefer-dist -vvv
-      workingDirectory: $(rootFolder)
-      displayName: 'Composer install'
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
+    - powershell: |
+        $XslPath = "<repo_name>/xml_to_nunit.xslt" 
+        $XmlInputPath = "xml_report.xml"
+        $XmlOutputPath = "converted_report.xml"
+        $XslTransform = New-Object System.Xml.Xsl.XslCompiledTransform
+        $XslTransform.Load($XslPath)
+        $XslTransform.Transform($XmlInputPath, $XmlOutputPath)
+      displayName: 'PowerShell Script'
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
       inputs:
-        rootFolderOrFile: '$(rootFolder)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      displayName: 'Upload package'
-      artifact: drop
-
-- stage: Deploy
-  displayName: 'Deploy Web App'
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: DeploymentJob
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: $(environmentName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App : fypprojectweb3'
-            inputs:
-              azureSubscription: $(azureSubscription)
-              appName: $(webAppName)
-              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+        testResultsFormat: 'NUnit'
+        testResultsFiles: 'converted_report.xml'
