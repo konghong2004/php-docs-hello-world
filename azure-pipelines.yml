@@ -30,7 +30,7 @@ stages:
   jobs:
   - job: BuildJob
     pool:
-      default
+      
     steps:
     - script: |
         sudo update-alternatives --set php /usr/bin/php$(phpVersion)
@@ -66,7 +66,7 @@ stages:
   jobs:
   - deployment: DeploymentJob
     pool:
-      default
+      
     environment: $(environmentName)
     strategy:
       runOnce:
