@@ -9,7 +9,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - bash: |
-        chmod -R 777  ./
-        docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t  http://10.175.10.177/FYP_Website/codes/  -r fypreport.html -m 10
+        sudo chmod -R 777  ./
+        sudo docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t  http://10.175.10.177/FYP_Website/codes/  -r fypreport.html -m 10
         true
       displayName: 'Owasp Container Scan'
