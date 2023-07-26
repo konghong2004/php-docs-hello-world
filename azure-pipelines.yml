@@ -9,8 +9,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - bash: |
-        sudo chmod -R 777  ./
         sudo docker run --rm exakat/exakat:latest
         sudo docker run --rm  exakat/exakat:latest project -p fyp4 -R https://github.com/zheng-hui/newWeb.git --format Text
-        sudo docker run  --rm  -v `pwd`/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp4 -R https://github.com/zheng-hui/newWeb.git
+        sudo docker run --rm  -v `pwd`/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp4 -R https://github.com/zheng-hui/newWeb.git
       displayName: 'Exacat Scan'
