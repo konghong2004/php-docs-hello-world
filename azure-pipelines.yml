@@ -10,7 +10,7 @@ stages:
     steps:
     - bash: |
         sudo chmod -R 777  ./
-        sudo docker run -it --rm exakat/exakat:latest
-        sudo docker run -it --rm  exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb.git --format Text
-        sudo docker run -it --rm  -v pwd/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb.git        true
+        sudo docker run --rm exakat/exakat:latest
+        sudo docker run --rm  exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb.git --format Text
+        sudo docker run --rm  -v pwd/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb.git        true
       displayName: 'Exacat Scan'
