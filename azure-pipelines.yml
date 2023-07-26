@@ -6,7 +6,7 @@ stages:
   jobs:
   - job: 'buildjob'
     pool:
-      vmImage: 'ubuntu-latest'
+      default
     steps:
     - bash: |
         cd /tmp
