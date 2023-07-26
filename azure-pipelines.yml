@@ -10,6 +10,8 @@ stages:
     steps:
     - bash: |
         sudo chmod -R 777  ./
-        sudo docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t  http://10.175.10.177/FYP_Website/codes/  -r fypreport.html -m 10
+        sudo docker run -it --rm exakat/exakat:latest
+        sudo docker run -it --rm  exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb/tree/8b7491ff92440b6920cba021008cf8464be3688b.git --format Text
+        sudo docker run -it --rm  -v pwd/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp2 -R https://github.com/zheng-hui/newWeb/tree/8b7491ff92440b6920cba021008cf8464be3688b.git
         true
-      displayName: 'Owasp Container Scan'
+      displayName: 'Exacat Scan'
