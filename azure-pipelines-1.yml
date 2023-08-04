@@ -14,6 +14,6 @@ stages:
       displayName: 'OWASP ZAP Scan'
 
     - bash: |
-        cd ~
+        cd Static-DOM-XSS-Scanner
         python2 staticDomXSS_scanner.py -d ~/Static-DOM-XSS-Scanner/FYP_DOM/
       displayName:  'DOM XSS Scan'
