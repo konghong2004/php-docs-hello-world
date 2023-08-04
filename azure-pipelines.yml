@@ -14,3 +14,8 @@ stages:
         sudo docker run --rm  exakat/exakat:latest project -p fyp4 -R https://github.com/zheng-hui/vWebsite.git --format Text
         sudo docker run --rm  -v `pwd`/projects:/usr/src/exakat/projects/ exakat/exakat:latest project -p fyp4 -R https://github.com/zheng-hui/vWebsite.git
       displayName: 'Exacat Scan'
+      
+    - bash: |
+        cd Static-DOM-XSS-Scanner
+        python2 staticDomXSS_scanner.py -d ~/Static-DOM-XSS-Scanner/FYP_DOM/
+      displayName:  'DOM XSS Scan'
