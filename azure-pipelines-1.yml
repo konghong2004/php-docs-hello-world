@@ -12,8 +12,3 @@ stages:
         cd ~
         sudo docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t  http://10.175.10.177/FYP_Website/codes/   -r fypreport_plswork.html -m 15
       displayName: 'OWASP ZAP Scan'
-
-    - bash: |
-        cd Static-DOM-XSS-Scanner
-        python2 staticDomXSS_scanner.py -d ~/Static-DOM-XSS-Scanner/FYP_DOM/
-      displayName:  'DOM XSS Scan'
