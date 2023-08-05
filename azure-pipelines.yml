@@ -20,3 +20,13 @@ stages:
         cd Static-DOM-XSS-Scanner
         python2 staticDomXSS_scanner.py -d ~/Static-DOM-XSS-Scanner/FYP_DOM/
       displayName:  'DOM XSS Scan'
+    
+    - bash: |
+        cd ~
+        ./xss_s.sh |  grep  '<script>alert(document.cookie)</script>' > stored_result.txt
+      displayName:  'Stored XSS Scan'
+    
+    - bash: |
+        cd ~
+        ./xss_r.sh | grep '<script>alert123</script>' > reflected_result.txt
+      displayName:  'Reflected XSS Scan'
