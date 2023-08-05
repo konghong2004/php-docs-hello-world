@@ -5,10 +5,11 @@ stages:
 - stage: 'buildstage'
   jobs:
   - job: 'buildjob'
+    timeoutInMinutes: 0
     pool:
       default
     steps:
     - bash: |
         cd ~
-        sudo docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t  http://192.168.1.83/FYP_Website/codes/   -r fypreport_plsworkfullscan.html -m 15
+        sudo docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -m 10 -T 10 -t  http://192.168.1.83/FYP_Website/codes/   -r fypreport_plsworkfullscan.html
       displayName: 'OWASP ZAP Scan'
