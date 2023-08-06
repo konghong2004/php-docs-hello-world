@@ -19,14 +19,23 @@ stages:
         cd ~
         cd Static-DOM-XSS-Scanner
         python2 staticDomXSS_scanner.py -d ~/Static-DOM-XSS-Scanner/FYP_DOM/
+      continueOnError: true
       displayName:  'DOM XSS Scan'
     
     - bash: |
         cd ~
         ./xss_s.sh |  grep  '<script>alert(document.cookie)</script>' > stored_result.txt
+      continueOnError: true
       displayName:  'Stored XSS Scan'
     
     - bash: |
         cd ~
-        ./xss_r.sh | grep '<script>alert123</script>' > reflected_result.txt
+        ./xss_r.sh | grep '<script>alert('XSS Reflected Attack')</script>' > reflected_result.txt
+      continueOnError: true
       displayName:  'Reflected XSS Scan'
+      
+    - bash: |
+        cd ~
+        ./sql_injection | grep '<title>Logged In</title>' > sqlinjection_result.txt
+      continueOnError: true
+      displayName:  'SQL Injection Scan'
