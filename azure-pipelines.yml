@@ -30,12 +30,12 @@ stages:
     
     - bash: |
         cd ~
-        ./xss_r.sh | grep '<script>alert('XSS Reflected Attack')</script>' > reflected_result.txt
+        ./xss_r.sh | grep '<script>alert(123)</script>' > reflected_result.txt
       continueOnError: true
       displayName:  'Reflected XSS Scan'
       
     - bash: |
         cd ~
-        ./sql_injection | grep '<title>Logged In</title>' > sqlinjection_result.txt
+        ./sql_injection.sh | grep '<title>Logged In</title>' > sqlinjection_result.txt
       continueOnError: true
       displayName:  'SQL Injection Scan'
