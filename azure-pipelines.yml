@@ -24,18 +24,18 @@ stages:
     
     - bash: |
         cd ~
-        ./xss_s.sh |  grep  '<script>alert(document.cookie)</script>' > stored_result.txt
+        ./xss_s_school.sh |  grep  '<script>alert(document.cookie)</script>' > stored_result.txt
       continueOnError: true
       displayName:  'Stored XSS Scan'
     
     - bash: |
         cd ~
-        ./xss_r.sh | grep '<script>alert(123)</script>' > reflected_result.txt
+        ./xss_r_school.sh | grep '<script>alert(123)</script>' > reflected_result.txt
       continueOnError: true
       displayName:  'Reflected XSS Scan'
       
     - bash: |
         cd ~
-        ./sql_injection.sh | grep 'Welcome' > sqlinjection_result.txt
+        ./sql_injection_school.sh | grep 'Welcome' > sqlinjection_result.txt
       continueOnError: true
       displayName:  'SQL Injection Scan'
