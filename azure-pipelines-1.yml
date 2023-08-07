@@ -2,9 +2,9 @@ trigger:
 - master
 
 stages:
-- stage: 'buildstage'
+- stage: 'teststage'
   jobs:
-  - job: 'buildjob'
+  - job: 'testjob'
     pool:
       default
     steps:
