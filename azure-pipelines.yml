@@ -36,6 +36,6 @@ stages:
       
     - bash: |
         cd ~
-        ./sql_injection.sh | grep '<title>Logged In</title>' > sqlinjection_result.txt
+        ./sql_injection.sh | grep 'Welcome' > sqlinjection_result.txt
       continueOnError: true
       displayName:  'SQL Injection Scan'
